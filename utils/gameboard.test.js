@@ -1,6 +1,7 @@
-const createGameBoard = require('./gameboard')
-const Ship = require('./battleship')
-const gameBoard = createGameBoard()
+import createGameBoard from "./gameboard"
+import Ship from "./battleship"
+
+export default gameBoard = createGameBoard()
 
 test('Place ship at out of Bounds', () => {
     expect(() => gameBoard.placeShip(-1,-1,new Ship(2))).toThrow('Invalid coordinates')

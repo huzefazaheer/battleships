@@ -1,4 +1,4 @@
-function createGameBoard() {
+export default function createGameBoard() {
     let Board = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
     let missedAttacks = []
     let totalShips = 0
@@ -17,9 +17,9 @@ function createGameBoard() {
                 checkIfFree(y + i, x)
                 Board[y+i][x] = ship
             }
-            Board[0][0] == ship
-            Board
         }
+
+        console.log(Board[y][x])
 
         totalShips ++
     }
@@ -70,5 +70,3 @@ function createGameBoard() {
         Board, receiveAttack, placeShip, missedAttacks, shipsRemaining
     }
 }
-
-module.exports = createGameBoard

@@ -1,0 +1,14 @@
+h3{
+    text-align: center;
+}
+
+.gameWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 5rem;
+}
+
+span {
+    padding: 1rem;
+}

@@ -1,4 +1,4 @@
-import Ship from "./utils/battleship"
+import Ship from "./battleship"
 
 const ship = new Ship(2)
 
