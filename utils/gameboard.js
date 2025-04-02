@@ -1,6 +1,7 @@
 export default function createGameBoard() {
     let Board = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
     let missedAttacks = []
+    let hitAttacks = []
     let totalShips = 0
 
     function placeShip(y, x, ship, isRotated = false){
@@ -19,13 +20,13 @@ export default function createGameBoard() {
             }
         }
 
-        console.log(Board[y][x])
 
         totalShips ++
     }
 
     function receiveAttack(y, x){
         checkCoords(y, x)
+        // checkIfHit(y, x)
 
         if (hasShip(y, x)){
             const ship = Board[y][x]
@@ -34,6 +35,7 @@ export default function createGameBoard() {
                 totalShips --
             }
             Board[y][x] = 1
+            console.log(hitAttacks)
             return true
         }else {
             missedAttacks.push([y, x])
@@ -50,12 +52,19 @@ export default function createGameBoard() {
     }
 
     function checkIfFree(y, x){
-        if (Board[y][x] == 1){
-            throw new Error('Already hit square')
-        }else if (Board[y][x] != 0){
+        if (Board[y][x] != 0){
             throw new Error('Already occupied square')
         }
     }
+
+    //Make better
+    // function checkIfHit(y, x){
+    //     let hitC= [y, x]
+    //     console.log(hitAttacks.forEach)
+    //     if (Board[y] == hitAttacks[0] && Board[x] == hitAttacks[1]){
+    //         throw new Error('Already hit square')
+    //     }
+    // }
 
     function hasShip(y, x){
         if (Board[y][x] == 0) return false
