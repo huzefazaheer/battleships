@@ -26,7 +26,7 @@ export default function createGameBoard() {
 
     function receiveAttack(y, x){
         checkCoords(y, x)
-        // checkIfHit(y, x)
+        checkIfHit(y, x)
 
         if (hasShip(y, x)){
             const ship = Board[y][x]
@@ -57,14 +57,11 @@ export default function createGameBoard() {
         }
     }
 
-    //Make better
-    // function checkIfHit(y, x){
-    //     let hitC= [y, x]
-    //     console.log(hitAttacks.forEach)
-    //     if (Board[y] == hitAttacks[0] && Board[x] == hitAttacks[1]){
-    //         throw new Error('Already hit square')
-    //     }
-    // }
+    function checkIfHit(y, x){
+        if (Board[y][x] == 1){
+            throw new Error('Already hit square')
+        }
+    }
 
     function hasShip(y, x){
         if (Board[y][x] == 0) return false

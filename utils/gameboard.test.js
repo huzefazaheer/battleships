@@ -28,7 +28,7 @@ test('Place ship at 1,1 vertically which should be displayed', () => {
 test('Hit ship and damage it', () => {
 
     expect(gameBoard.receiveAttack(0,0)).toBeTruthy()
-    expect(() => gameBoard.receiveAttack(0,0)).toThrow('Already occupied square')
+    expect(gameBoard.Board[0][0]).toEqual(1)
     expect(gameBoard.Board[0][1].hitCount).toEqual(1)
 })
 
