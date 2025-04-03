@@ -13,6 +13,14 @@ export function getUser2(){
     return new Player('Ibi')
 }
 
+export function checkForWinner(p1, p2){
+    if(isAttackPhase){
+        if(p1.gameBoard.shipsRemaining() == 0) return p2
+        if(p2.gameBoard.shipsRemaining() == 0) return p1
+    }
+    return
+}
+
 function placeCarrier(player, y, x, vertical){
     if(player.carrierPlaced == false){
         player.gameBoard.placeShip(y, x, new Ship(5), vertical)
@@ -136,6 +144,12 @@ export function drawGame(p1, p2){
     
     gameWrapper.appendChild(table)
     gameWrapper.appendChild(table2)
+
+    if(checkForWinner(p1, p2) != undefined){
+        gameWrapper.innerHTML = ''
+        gameWrapper.textContent = checkForWinner(p1, p2).name + ' has won'
+        return
+    }
 }
 
 let isVert = false
