@@ -91,22 +91,24 @@ export function drawGame(p1, p2){
 
         for (let i = 0; i < 10; i++){
 
-            let tableRow = document.createElement('tr')
-            tableRow.id = i
-        
+            let tableRow = document.createElement('tr')        
             for (let j = 0; j < 10; j++){
                 let data = document.createElement('td')
-                data.id = j
-                if (p1.gameBoard.Board[i][j] != 0){
-                    // data.textContent = p1.gameBoard.Board[i][j].health - p1.gameBoard.Board[i][j].hitCount
-                    data.classList.add('shiphit')
+                if(isAttackPhase == true){
+                    if (p1.gameBoard.Board[i][j] == 1){
+                        data.classList.add('shiphit')
+                    }
+                }else {
+                    if (p1.gameBoard.Board[i][j] != 0){
+                        data.classList.add('shipplace')
+                    }
                 }
-                if (data.textContent == 'NaN') data.textContent = 'x'
                 tableRow.appendChild(data)
                 data.addEventListener('click', () => {
                     console.log(i, j)
                     if(isAttackPhase == true){
                         p1.gameBoard.receiveAttack(i, j)
+                        console.log(p1.gameBoard.Board[i][j])
                     }else{
                         placeShips(p1, i, j)
                     }
@@ -126,12 +128,15 @@ export function drawGame(p1, p2){
         
             for (let j = 0; j < 10; j++){
                 let data = document.createElement('td')
-                let boat = 0
-                if (p2.gameBoard.Board[i][j] != 0){
-                    // data.textContent = p2.gameBoard.Board[i][j].health - p2.gameBoard.Board[i][j].hitCount
-                    data.classList.add('shiphit')
+                if(isAttackPhase == true){
+                    if (p2.gameBoard.Board[i][j] == 1){
+                        data.classList.add('shiphit')
+                    }
+                }else {
+                    if (p2.gameBoard.Board[i][j] != 0){
+                        data.classList.add('shipplace')
+                    }
                 }
-                if (data.textContent == 'NaN') data.textContent = 'x'
                 tableRow.appendChild(data)
                 data.addEventListener('click', () => {
                     console.log(i, j)
