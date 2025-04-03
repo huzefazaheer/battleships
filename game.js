@@ -80,66 +80,72 @@ export function drawGame(p1, p2){
     if (p1.allPlaced() && p2.allPlaced()) isAttackPhase = true
 
     const gameWrapper = document.querySelector('.gameWrapper')
+    const table = document.createElement('table')
+    const table2 = document.createElement('table')
     gameWrapper.innerHTML = ''
 
-    const table = document.createElement('table')
+    console.log(p1.allPlaced(), p2.allPlaced())
 
-    for (let i = 0; i < 10; i++){
+    if(p1.allPlaced() == false || (p1.allPlaced() == true && p2.allPlaced() == true)){
+        
 
-        let tableRow = document.createElement('tr')
-        tableRow.id = i
-    
-        for (let j = 0; j < 10; j++){
-            let data = document.createElement('td')
-            data.id = j
-            if (p1.gameBoard.Board[i][j] != 0){
-                data.textContent = p1.gameBoard.Board[i][j].health - p1.gameBoard.Board[i][j].hitCount
-                data.classList.add('shiphit')
-            }else data.textContent = 0
-            if (data.textContent == 'NaN') data.textContent = 'x'
-            tableRow.appendChild(data)
-            data.addEventListener('click', () => {
-                console.log(i, j)
-                if(isAttackPhase == true){
-                    p1.gameBoard.receiveAttack(i, j)
-                }else{
-                    placeShips(p1, i, j)
+        for (let i = 0; i < 10; i++){
+
+            let tableRow = document.createElement('tr')
+            tableRow.id = i
+        
+            for (let j = 0; j < 10; j++){
+                let data = document.createElement('td')
+                data.id = j
+                if (p1.gameBoard.Board[i][j] != 0){
+                    // data.textContent = p1.gameBoard.Board[i][j].health - p1.gameBoard.Board[i][j].hitCount
+                    data.classList.add('shiphit')
                 }
-                drawGame(p1, p2)
-            })
+                if (data.textContent == 'NaN') data.textContent = 'x'
+                tableRow.appendChild(data)
+                data.addEventListener('click', () => {
+                    console.log(i, j)
+                    if(isAttackPhase == true){
+                        p1.gameBoard.receiveAttack(i, j)
+                    }else{
+                        placeShips(p1, i, j)
+                    }
+                    drawGame(p1, p2)
+                })
+            }
+        
+            table.appendChild(tableRow)
         }
-    
-        table.appendChild(tableRow)
+        gameWrapper.appendChild(table)
     }
-    gameWrapper.appendChild(table)
     
-    const table2 = document.createElement('table')
+    if((p2.allPlaced() == false && p1.allPlaced() == true ) || (p1.allPlaced() == true && p2.allPlaced() == true)){
+        for (let i = 0; i < 10; i++){
     
-    for (let i = 0; i < 10; i++){
-    
-        let tableRow = document.createElement('tr')
-    
-        for (let j = 0; j < 10; j++){
-            let data = document.createElement('td')
-            let boat = 0
-            if (p2.gameBoard.Board[i][j] != 0){
-                data.textContent = p2.gameBoard.Board[i][j].health - p2.gameBoard.Board[i][j].hitCount
-                data.classList.add('shiphit')
-            }else data.textContent = 0
-            if (data.textContent == 'NaN') data.textContent = 'x'
-            tableRow.appendChild(data)
-            data.addEventListener('click', () => {
-                console.log(i, j)
-                if(isAttackPhase ==true){
-                    p2.gameBoard.receiveAttack(i, j)
-                }else {
-                    placeShips(p2, i, j)
+            let tableRow = document.createElement('tr')
+        
+            for (let j = 0; j < 10; j++){
+                let data = document.createElement('td')
+                let boat = 0
+                if (p2.gameBoard.Board[i][j] != 0){
+                    // data.textContent = p2.gameBoard.Board[i][j].health - p2.gameBoard.Board[i][j].hitCount
+                    data.classList.add('shiphit')
                 }
-                drawGame(p1, p2)
-            })
+                if (data.textContent == 'NaN') data.textContent = 'x'
+                tableRow.appendChild(data)
+                data.addEventListener('click', () => {
+                    console.log(i, j)
+                    if(isAttackPhase ==true){
+                        p2.gameBoard.receiveAttack(i, j)
+                    }else {
+                        placeShips(p2, i, j)
+                    }
+                    drawGame(p1, p2)
+                })
+            }
+        
+            table2.appendChild(tableRow)
         }
-    
-        table2.appendChild(tableRow)
     }
     
     gameWrapper.appendChild(table)
