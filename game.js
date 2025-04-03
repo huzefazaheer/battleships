@@ -3,28 +3,75 @@ import Player from "./utils/player.js"
 
 console.log("Js loaded!")
 
-let p1 = new Player('Huzefa')
-let p2 = new Player('Ibi')
+let isAttackPhase = false
 
-p1.gameBoard.placeShip(3, 3, new Ship(5), true)
-p1.gameBoard.placeShip(0, 0, new Ship(4))
-p1.gameBoard.placeShip(8, 6, new Ship(3))
-p1.gameBoard.placeShip(5, 6, new Ship(3))
-p1.gameBoard.placeShip(6, 0, new Ship(2), true)
+export function getUser1(){
+    return new Player('Huzefa')
+}
 
-p2.gameBoard.placeShip(2, 2, new Ship(5))
-p2.gameBoard.placeShip(6, 2, new Ship(4), true)
-p2.gameBoard.placeShip(7, 6, new Ship(3), true)
-// p2.gameBoard.placeShip(7, 6, new Ship(3))
-p2.gameBoard.placeShip(6, 9, new Ship(2), true)
+export function getUser2(){
+    return new Player('Ibi')
+}
 
-const gameWrapper = document.querySelector('.gameWrapper')
+function placeCarrier(player, y, x, vertical){
+    if(player.carrierPlaced == false){
+        player.gameBoard.placeShip(y, x, new Ship(5), vertical)
+        player.carrierPlaced = true
+        console.log(player.name, ' placed carrier on ', y, x)
+        return true
+    }else return false
+}
 
-// const p1name = document.createElement('p')
-// p1name.textContent = p1.name
+function placeBattleship(player, y, x, vertical){
+    if(player.battleshipPlaced == false){
+        player.gameBoard.placeShip(y, x, new Ship(4), vertical)
+        player.battleshipPlaced = true
+        console.log(player.name, ' placed battleship on ', y, x)
+        return true
+    }else return false
+}
 
-function drawGame(){
+function placeCruiser(player, y, x, vertical){
+    if(player.cruiserPlaced == false){
+        player.gameBoard.placeShip(y, x, new Ship(3), vertical)
+        player.cruiserPlaced = true
+        console.log(player.name, ' placed cruiser on ', y, x)
+        return true
+    }else return false
+}
 
+function placeSubmarine(player, y, x, vertical){
+    if(player.submarinePlaced == false){
+        player.gameBoard.placeShip(y, x, new Ship(3), vertical)
+        player.submarinePlaced = true
+        console.log(player.name, ' placed submarine on ', y, x)
+        return true
+    }else return false
+}
+
+function placeDestroyer(player, y, x, vertical){
+    if(player.destroyerPlaced == false){
+        player.gameBoard.placeShip(y, x, new Ship(2), vertical)
+        player.destroyerPlaced = true
+        console.log(player.name, ' placed destroyer on ', y, x)
+        return true
+    }else return false
+}
+
+function placeShips(player, i, j){
+    while(player.allPlaced() == false){
+            if (placeBattleship(player, i, j, isVert)) break
+            if (placeCarrier(player, i, j, isVert)) break
+            if (placeCruiser(player, i, j, isVert)) break
+            if (placeSubmarine(player, i, j, isVert)) break
+            if (placeDestroyer(player, i, j, isVert)) break
+    }
+}
+
+export function drawGame(p1, p2){
+    if (p1.allPlaced() && p2.allPlaced()) isAttackPhase = true
+
+    const gameWrapper = document.querySelector('.gameWrapper')
     gameWrapper.innerHTML = ''
 
     const table = document.createElement('table')
@@ -32,9 +79,11 @@ function drawGame(){
     for (let i = 0; i < 10; i++){
 
         let tableRow = document.createElement('tr')
+        tableRow.id = i
     
         for (let j = 0; j < 10; j++){
             let data = document.createElement('td')
+            data.id = j
             if (p1.gameBoard.Board[i][j] != 0){
                 data.textContent = p1.gameBoard.Board[i][j].health - p1.gameBoard.Board[i][j].hitCount
                 data.classList.add('shiphit')
@@ -43,8 +92,12 @@ function drawGame(){
             tableRow.appendChild(data)
             data.addEventListener('click', () => {
                 console.log(i, j)
-                p1.gameBoard.receiveAttack(i, j)
-                drawGame()
+                if(isAttackPhase == true){
+                    p1.gameBoard.receiveAttack(i, j)
+                }else{
+                    placeShips(p1, i, j)
+                }
+                drawGame(p1, p2)
             })
         }
     
@@ -69,8 +122,12 @@ function drawGame(){
             tableRow.appendChild(data)
             data.addEventListener('click', () => {
                 console.log(i, j)
-                p2.gameBoard.receiveAttack(i, j)
-                drawGame()
+                if(isAttackPhase ==true){
+                    p2.gameBoard.receiveAttack(i, j)
+                }else {
+                    placeShips(p2, i, j)
+                }
+                drawGame(p1, p2)
             })
         }
     
@@ -81,6 +138,11 @@ function drawGame(){
     gameWrapper.appendChild(table2)
 }
 
-drawGame()
-
-//TODO: Modularise
+let isVert = false
+document.onkeydown = (e) => {
+    if(e.key == 'r' || e.key == 'R'){
+        if(isVert) isVert = false
+        else isVert = true
+        console.log(isVert) 
+    }
+}   
