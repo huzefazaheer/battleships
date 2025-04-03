@@ -39,6 +39,7 @@ export default function createGameBoard() {
             return true
         }else {
             missedAttacks.push([y, x])
+            Board[y][x] = -1
             return false
         }
 

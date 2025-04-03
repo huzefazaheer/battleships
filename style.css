@@ -30,10 +30,14 @@ td:hover{
     background-color: rgba(233, 240, 247, 0.815);
 }
 
-.shiphit{
+.shiphit, .shiphit:hover{
     background-color: rgba(212, 135, 133, 0.815);
 }
 
-.shipplace{
+.shipsunk{
+    background-color: rgba(161, 73, 70, 0.815);
+}
+
+.shipplace, .misshit, .misshit:hover, .shipplace:hover{
     background-color: rgba(133, 153, 212, 0.815);
 }

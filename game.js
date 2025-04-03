@@ -97,6 +97,8 @@ export function drawGame(p1, p2){
                 if(isAttackPhase == true){
                     if (p1.gameBoard.Board[i][j] == 1){
                         data.classList.add('shiphit')
+                    }else if(p1.gameBoard.Board[i][j] == -1){
+                        data.classList.add('misshit')
                     }
                 }else {
                     if (p1.gameBoard.Board[i][j] != 0){
@@ -131,6 +133,8 @@ export function drawGame(p1, p2){
                 if(isAttackPhase == true){
                     if (p2.gameBoard.Board[i][j] == 1){
                         data.classList.add('shiphit')
+                    }else if(p2.gameBoard.Board[i][j] == -1){
+                        data.classList.add('misshit')
                     }
                 }else {
                     if (p2.gameBoard.Board[i][j] != 0){
