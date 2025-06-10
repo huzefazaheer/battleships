@@ -1,4 +1,4 @@
-class Ship{
+export default class Ship{
 
     constructor(name, health){
         this.name = name;
@@ -18,5 +18,3 @@ class Ship{
     }
 
 }
-
-module.exports = Ship;

@@ -1,10 +1,10 @@
-const Player = require("./Player")
-const Ship = require("./Ship")
+import Player from "./Player.js"
+import Ship from "./Ship.js"
 
 const p1 = new Player("player1");
 
-const carrier = new Ship("Carrier", 5, false);
-const cruiser = new Ship("Cruiser", 3, true);
+const carrier = new Ship("Carrier", 5);
+const cruiser = new Ship("Cruiser", 3);
 
 test("Place valid carrier", () => {
     p1.gameBoard.placeShip(carrier, [2, 2])

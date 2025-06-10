@@ -1,4 +1,4 @@
-const Ship = require("./Ship");
+import Ship from "./Ship.js";
 
 const crusier = new Ship("Cruiser", 3)
 
