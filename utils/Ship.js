@@ -1,9 +1,8 @@
 class Ship{
 
-    constructor(name, health, isVert = false){
+    constructor(name, health){
         this.name = name;
         this.health = health;
-        this.isVert = isVert;
     }
 
     hit(){

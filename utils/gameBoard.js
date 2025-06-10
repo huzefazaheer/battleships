@@ -3,8 +3,8 @@ class gameBoard{
         this.board = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
     }
 
-    placeShip(ship, pos){
-        if(!ship.isVert){
+    placeShip(ship, pos, isVert = false){
+        if(!isVert){
             if(ship.health+pos[0] > 10) throw new Error("Out of bounds")
             for(i=pos[0]; i<ship.health+pos[0]; i++){
                 if(this.board[i][pos[1]] != 0) throw new Error("Already occupied coordinate")

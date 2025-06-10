@@ -15,7 +15,7 @@ test("Place valid carrier", () => {
 })
 
 test("Place valid cruiser vertically", () => {
-    p1.gameBoard.placeShip(cruiser, [5, 5])
+    p1.gameBoard.placeShip(cruiser, [5, 5], true)
     expect(p1.gameBoard.board[5][5]).toEqual(cruiser);
     expect(p1.gameBoard.board[5][6]).toEqual(cruiser);
     expect(p1.gameBoard.board[5][7]).toEqual(cruiser);
