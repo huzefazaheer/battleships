@@ -1,6 +1,8 @@
     import Player from "./utils/Player.js"
     import Ship from "./utils/Ship.js"
 
+    let isHorizontal = true
+
     const carrier = new Ship("Carrier", 5);
     const battleship = new Ship("Battleship", 4);
     const cruiser = new Ship("Cruiser", 3);
@@ -17,18 +19,21 @@
 
     async function placeUserShips(player){
 
+        document.addEventListener('keydown', (e) => {
+        if(e.key == "r"){
+            isHorizontal == true ? isHorizontal = false : isHorizontal = true
+            console.log("Rotation changed, isHorizontal", isHorizontal)
+        }
+    })
+
         for(const ship of ships){
             let shipPlaced = false
 
             while(!shipPlaced){
                 shipPlaced = false
                 const playerCoords = await getPlayerPlaceCoords()
-                console.log(playerCoords)
-                let inp = prompt("Do you want " + ship.name + " to be vertically placed");
-                let isH = true;
-                inp === "f" ? isH = false : isH = true;
                 try {
-                    player.gameBoard.placeShip(ship, playerCoords, isH)
+                    player.gameBoard.placeShip(ship, playerCoords, isHorizontal)
                     console.log("Placed",ship.name,"at coordinates: ", playerCoords[0], playerCoords[1])
                     shipPlaced = true
                 } catch (error) {
