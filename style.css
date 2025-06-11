@@ -1,14 +1,55 @@
+body{
+background-image: url("./water.gif");
+background-repeat: repeat;
+color: white;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+    text-align: center;
+}
+
+.prompt{
+    position: absolute;
+    top: 50%;   
+    left: 50%;  
+   transform: translate(-50%, -50%);
+   background-color: aliceblue;
+   color: black;
+   padding: 40px;
+   border-radius: 10px;
+}
+
+h4{
+    margin-top: 0;
+}
+
+.prompttext{
+    font-size: 12px;
+}
+
+.prompthidden, .gameboardhidden{
+    display: none;
+}
+
 .gamediv{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    background-color: rgba(185, 206, 236, 0);
+    margin-top: 10vh;
 }
 
 .column{
-    padding: 10px;
-    border: 1px solid black;
+    padding: 25px;
+    border: 1px solid white;
+    background-color: rgba(227, 236, 246, 0.766);
+}
+
+.column:hover{
+    background-color: rgba(161, 194, 231, 0.829);
 }
 
 .hasship{
-    background-color: aqua;
+    background-color: #5facff;
 }
