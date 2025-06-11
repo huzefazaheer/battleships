@@ -76,3 +76,11 @@ button:active{
 .hasship{
     background-color: #5facffc2;
 }
+
+.shiphit{
+    background-color: #e95454c4;
+}
+
+.shipsunk{
+    background-color: #881b1bba;
+}

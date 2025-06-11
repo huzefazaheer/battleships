@@ -7,5 +7,6 @@ export default class Player{
         this.moveList = []
         this.gameBoard = new gameBoard();
         this.gamesWon = 0;
+        this.shipCount = 5;
     }
 }

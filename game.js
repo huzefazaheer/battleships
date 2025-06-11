@@ -183,14 +183,37 @@
     }
 
     async function playTurn(player){
-        const playerCoords = await getPlayerPlaceCoords(player)
         try{
-            player.gameBoard[playerCoords[0]][playerCoords[1]].hit()
-            console.log("hit")
+            const playerCoords = await getPlayerPlaceCoords(player)
+            let item = player.gameBoard.board[playerCoords[0]][playerCoords[1]]
+            console.log(item)
+            if(item == -1) throw new Error("Already Hit")
+            if(item == 0){
+                console.log("miss")
+            }else {
+                console.log("hit")
+                item.hit()
+                document.getElementById(playerCoords).classList.add("shiphit")
+                if(item.isSunk()) {
+                    player.shipCount -= 1
+                    console.log(player.name, player.shipCount)
+                    console.log(item.name,"sunk")
+                    
+                }
+                if(getWinner() == null) playTurn(player);
+                
+            }
+            player.gameBoard.board[playerCoords[0]][playerCoords[1]] = -1
         }catch (e){
-            console.log("error")
-            playTurn(player)
+            console.log("Error while attacking", e)
+            if(e=="Already Hit")playTurn(player)
         }
+    }
+
+    function getWinner(){
+        if(p1.shipCount == 0) return p2
+        else if(p2.shipCount == 0) return p1
+        else return null
     }
 
     hp1name.innerText = p1.name
@@ -208,10 +231,19 @@
     togglePlayer1DOM()
     console.log("Attacking Phase")
 
-    // while(!gameFinised){
-    //     playTurn(p1)
-    //     playTurn(p2)
-    // }
+    let winner = null
+    while(winner == null){
+        winner = getWinner()
+        if(winner != null) break
+        await playTurn(p2)
+        winner = getWinner()
+        if(winner != null) break
+        await playTurn(p1)
+        winner = getWinner()
+        if(winner != null) break
+    }
+
+    console.log("Winner is ", winner.name)
 
     function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));

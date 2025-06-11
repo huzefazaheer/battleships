@@ -12,7 +12,7 @@ export default class Ship{
     }
 
     isSunk(){
-        shipSunk = false;
+        let shipSunk = false;
         this.health == 0 ? shipSunk = true : false;
         return shipSunk;
     }
