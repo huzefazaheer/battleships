@@ -46,8 +46,14 @@ h4{
     background-color: rgba(227, 236, 246, 0.766);
 }
 
-.column:hover{
+/* .column:hover{
     background-color: rgba(161, 194, 231, 0.829);
+     transition: background-color 0.1s ease;
+} */
+
+.previewplacement{
+    background-color: rgba(161, 194, 231, 0.829);
+     transition: background-color 0.1s ease;
 }
 
 .hasship{
