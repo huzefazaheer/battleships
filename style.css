@@ -84,3 +84,7 @@ button:active{
 .shipsunk{
     background-color: #881b1bba;
 }
+
+.misshit{
+    background-color: rgba(175, 202, 233, 0.41);;
+}

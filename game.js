@@ -189,6 +189,7 @@
             console.log(item)
             if(item == -1) throw new Error("Already Hit")
             if(item == 0){
+                document.getElementById(playerCoords).classList.add("misshit")
                 console.log("miss")
             }else {
                 console.log("hit")
@@ -196,7 +197,6 @@
                 document.getElementById(playerCoords).classList.add("shiphit")
                 if(item.isSunk()) {
                     player.shipCount -= 1
-                    console.log(player.name, player.shipCount)
                     console.log(item.name,"sunk")
                     
                 }
@@ -205,8 +205,8 @@
             }
             player.gameBoard.board[playerCoords[0]][playerCoords[1]] = -1
         }catch (e){
-            console.log("Error while attacking", e)
-            if(e=="Already Hit")playTurn(player)
+            console.log(e)
+            if(e=="Error: Already Hit") playTurn(player)
         }
     }
 
