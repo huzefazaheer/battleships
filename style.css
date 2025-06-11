@@ -1,3 +1,9 @@
+.gamediv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 .column{
     padding: 10px;
     border: 1px solid black;

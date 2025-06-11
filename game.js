@@ -14,24 +14,22 @@
     const p1 = new Player("Player1");
     const p2 = new Player("Player2");
 
-    await placeUserShips(p1);
-    // placeUserShips(p2)
-
     async function placeUserShips(player){
 
-        document.addEventListener('keydown', (e) => {
+        const rotateHandler = (e) => {
         if(e.key == "r"){
             isHorizontal == true ? isHorizontal = false : isHorizontal = true
             console.log("Rotation changed, isHorizontal", isHorizontal)
-        }
-    })
+        }}
+        document.addEventListener('keydown', rotateHandler)
+    
 
         for(const ship of ships){
             let shipPlaced = false
 
             while(!shipPlaced){
                 shipPlaced = false
-                const playerCoords = await getPlayerPlaceCoords()
+                const playerCoords = await getPlayerPlaceCoords(player)
                 try {
                     player.gameBoard.placeShip(ship, playerCoords, isHorizontal)
                     console.log("Placed",ship.name,"at coordinates: ", playerCoords[0], playerCoords[1])
@@ -42,13 +40,18 @@
             }
         }
 
+        document.removeEventListener('keydown', rotateHandler)
+
         return true 
         
     }
 
     function displayBoard(gameBoard){
-        const domBoard = document.getElementById("p1Board").children[0]
-        console.log(domBoard.children)
+        let domBoard
+
+        if(gameBoard === p1.gameBoard) domBoard = document.getElementById("p1Board").children[0]
+        else domBoard = document.getElementById("p2Board").children[0]
+
         for(let i = 0; i < 10; i++){
             const row = domBoard.children[i]
             for(let j = 0; j < 10; j++){
@@ -60,8 +63,11 @@
         }
     }
 
-    async function getPlayerPlaceCoords(){
-        const domBoard = document.getElementById("p1Board").children[0];
+    async function getPlayerPlaceCoords(player){
+        let domBoard
+
+        if(player === p1) domBoard = document.getElementById("p1Board").children[0]
+        else domBoard = document.getElementById("p2Board").children[0]
         
         return new Promise(resolve => {
             const clickHandler = (e) => {
@@ -75,5 +81,7 @@
 
     }
 
-    console.log(p1.gameBoard.board)
+    await placeUserShips(p1);
     displayBoard(p1.gameBoard)
+    await placeUserShips(p2)
+    displayBoard(p2.gameBoard)
