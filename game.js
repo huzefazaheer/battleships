@@ -16,6 +16,13 @@
 
     const ships = [carrier, battleship, cruiser, submarine, destroyer]
 
+    function showWinScreen(text){
+        const prompt = document.querySelector(".winscreen")
+        const headingPrompt = document.querySelector(".winheading")
+        headingPrompt.innerText = text
+        prompt.classList.remove("prompthidden")
+    }
+
     async function getInputFromPrompt(text){
         const prompt = document.querySelector(".prompt")
         const button = document.getElementById("btn")
@@ -183,35 +190,36 @@
     }
 
     async function playTurn(player){
+        let attackResult
         try{
             const playerCoords = await getPlayerPlaceCoords(player)
             let item = player.gameBoard.board[playerCoords[0]][playerCoords[1]]
             console.log(item)
-            if(item == -1) throw new Error("Already Hit")
+            if(item == -1) attackResult = "invalid"
             if(item == 0){
                 document.getElementById(playerCoords).classList.add("misshit")
+                attackResult = "miss"
                 console.log("miss")
             }else {
                 console.log("hit")
+                attackResult = "hit"
                 item.hit()
                 document.getElementById(playerCoords).classList.add("shiphit")
                 if(item.isSunk()) {
                     player.shipCount -= 1
                     console.log(item.name,"sunk")
-                    
                 }
-                if(getWinner() == null) playTurn(player);
-                
             }
             player.gameBoard.board[playerCoords[0]][playerCoords[1]] = -1
+            if((attackResult == "hit" || attackResult == "invalid") && getWinner() == null) playTurn(player) 
+                else showWinScreen("You have won ", getWinner().name)
         }catch (e){
             console.log(e)
-            if(e=="Error: Already Hit") playTurn(player)
         }
     }
 
     function getWinner(){
-        if(p1.shipCount == 0) return p2
+        if(p1.shipCount == 0) {return p2}
         else if(p2.shipCount == 0) return p1
         else return null
     }
@@ -235,10 +243,10 @@
     while(winner == null){
         winner = getWinner()
         if(winner != null) break
-        await playTurn(p2)
+        else await playTurn(p2)
         winner = getWinner()
         if(winner != null) break
-        await playTurn(p1)
+        else await playTurn(p1)
         winner = getWinner()
         if(winner != null) break
     }
