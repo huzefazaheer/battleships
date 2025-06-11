@@ -7,6 +7,8 @@
     const submarine = new Ship("Submarine", 3);
     const destroyer = new Ship("Destroyer", 2);
 
+    const ships = [carrier, battleship, cruiser, submarine, destroyer]
+
     const p1 = new Player("Player1");
     const p2 = new Player("Player2");
 
@@ -14,20 +16,26 @@
     placeUserShips(p2)
 
     function placeUserShips(player){
-        while(!player.carrierPlaced){
-            let coords = [0,0]
-            coords[0] = parseInt(prompt(player.name + ", Enter x coordinate for carrier"), 10);
-            coords[1] = parseInt(prompt(player.name + ", Enter x coordinate for carrier"), 10);
-            let inp = prompt(player.name + ", Do you want carrier to be vertically placed");
-            let isV = false;
-            inp === "t" ? isV = true : isV = false;
-            try {
-                player.gameBoard.placeShip(carrier, coords, isV)
-                player.carrierPlaced = true
-            } catch (error) {
-                console.log(error, coords)
+
+        ships.forEach(ship => {
+            let shipPlaced = false
+
+            while(!shipPlaced){
+                shipPlaced = false
+                let coords = [0,0]
+                coords[0] = parseInt(prompt(player.name + ", Enter x coordinate for " + ship.name), 10);
+                coords[1] = parseInt(prompt(player.name + ", Enter x coordinate for " + ship.name), 10);
+                let inp = prompt("Do you want " + ship.name + " to be vertically placed");
+                let isV = false;
+                inp === "t" ? isV = true : isV = false;
+                try {
+                    player.gameBoard.placeShip(ship, coords, isV)
+                    shipPlaced = true
+                } catch (error) {
+                    console.log(error, coords)
+                }
             }
-        }
+        });
         
     }
 
