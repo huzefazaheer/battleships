@@ -3,7 +3,11 @@ export default class gameBoard{
         this.board = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
     }
 
-    placeShip(ship, pos, isVert = false){
+    placeShip(ship, Spos, isVert = false){
+        let pos = []
+        pos[0] = parseInt(Spos[0], 10)
+        pos[1] = parseInt(Spos[1], 10)
+        
         if(!isVert){
             if(ship.health+pos[0] > 10) throw new Error("Out of bounds")
             for(let i=pos[0]; i<ship.health+pos[0]; i++){

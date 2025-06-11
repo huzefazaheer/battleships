@@ -12,31 +12,63 @@
     const p1 = new Player("Player1");
     const p2 = new Player("Player2");
 
-    placeUserShips(p1);
-    placeUserShips(p2)
+    await placeUserShips(p1);
+    // placeUserShips(p2)
 
-    function placeUserShips(player){
+    async function placeUserShips(player){
 
-        ships.forEach(ship => {
+        for(const ship of ships){
             let shipPlaced = false
 
             while(!shipPlaced){
                 shipPlaced = false
-                let coords = [0,0]
-                coords[0] = parseInt(prompt(player.name + ", Enter x coordinate for " + ship.name), 10);
-                coords[1] = parseInt(prompt(player.name + ", Enter x coordinate for " + ship.name), 10);
+                const playerCoords = await getPlayerPlaceCoords()
+                console.log(playerCoords)
                 let inp = prompt("Do you want " + ship.name + " to be vertically placed");
-                let isV = false;
-                inp === "t" ? isV = true : isV = false;
+                let isH = true;
+                inp === "f" ? isH = false : isH = true;
                 try {
-                    player.gameBoard.placeShip(ship, coords, isV)
+                    player.gameBoard.placeShip(ship, playerCoords, isH)
+                    console.log("Placed",ship.name,"at coordinates: ", playerCoords[0], playerCoords[1])
                     shipPlaced = true
                 } catch (error) {
-                    console.log(error, coords)
+                    console.log(error,"at", playerCoords[0], playerCoords[1])
                 }
             }
-        });
+        }
+
+        return true 
         
     }
 
+    function displayBoard(gameBoard){
+        const domBoard = document.getElementById("p1Board").children[0]
+        console.log(domBoard.children)
+        for(let i = 0; i < 10; i++){
+            const row = domBoard.children[i]
+            for(let j = 0; j < 10; j++){
+                const column = row.children[j]
+                if(gameBoard.board[i][j] != 0){
+                    column.classList.add("hasship");
+                }
+            }
+        }
+    }
+
+    async function getPlayerPlaceCoords(){
+        const domBoard = document.getElementById("p1Board").children[0];
+        
+        return new Promise(resolve => {
+            const clickHandler = (e) => {
+                let UID = e.target.id
+                domBoard.removeEventListener("click", clickHandler)
+                resolve(UID)
+            }
+
+            domBoard.addEventListener("click", clickHandler)
+        })
+
+    }
+
     console.log(p1.gameBoard.board)
+    displayBoard(p1.gameBoard)
