@@ -22,6 +22,7 @@
         const inputPrompt = document.querySelector(".pinput")
         const headingPrompt = document.querySelector(".promptheading")
         headingPrompt.innerText = text
+        inputPrompt.value = ""
         prompt.classList.remove("prompthidden")
         return new Promise(resolve => {
             const buttonListener = (e) => {
@@ -109,10 +110,16 @@
         return domBoard
     }
 
-    function toggleGameBoard(player){
-        const domBoard = getPlayerBoardDOM(player)
-        if(domBoard.classList.contains("gameboardhidden")) domBoard.classList.remove("gameboardhidden")
-        else domBoard.classList.add("gameboardhidden")
+    function togglePlayer1DOM(){
+        const playerGame = document.querySelector(".p1wrapper")
+        if(playerGame.classList.contains("gameboardhidden")) playerGame.classList.remove("gameboardhidden")
+        else playerGame.classList.add("gameboardhidden")
+    }
+
+    function togglePlayer2DOM(){
+        const playerGame = document.querySelector(".p2wrapper")
+        if(playerGame.classList.contains("gameboardhidden")) playerGame.classList.remove("gameboardhidden")
+        else playerGame.classList.add("gameboardhidden")
     }
 
     async function playTurn(player){
@@ -129,14 +136,23 @@
     hp1name.innerText = p1.name
     hp2name.innerText = p2.name
 
-    toggleGameBoard(p1)
+    togglePlayer1DOM()
     await placeUserShips(p1);
-    displayBoard(p1.gameBoard)
+    displayBoard(p1)
+    await sleep(1000)
+    togglePlayer1DOM()
+    togglePlayer2DOM()
     await placeUserShips(p2)
-    displayBoard(p2.gameBoard)
+    displayBoard(p2)
+    await sleep(1000)
+    togglePlayer1DOM()
     console.log("Attacking Phase")
 
     // while(!gameFinised){
     //     playTurn(p1)
     //     playTurn(p2)
     // }
+
+    function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

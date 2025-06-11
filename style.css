@@ -42,7 +42,7 @@ h4{
 
 .column{
     padding: 25px;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     background-color: rgba(227, 236, 246, 0.766);
 }
 
@@ -51,5 +51,5 @@ h4{
 }
 
 .hasship{
-    background-color: #5facff;
+    background-color: #5facffc2;
 }
