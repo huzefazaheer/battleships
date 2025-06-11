@@ -25,11 +25,25 @@
         inputPrompt.value = ""
         prompt.classList.remove("prompthidden")
         return new Promise(resolve => {
+            const enterHandler = (e) => {
+            if(e.key == "Enter"){
+                let val = inputPrompt.value
+                if(val!=""){
+                prompt.classList.add("prompthidden")
+                button.removeEventListener("click", buttonListener)
+                document.removeEventListener('keydown', enterHandler)
+                resolve(val)
+            }
+            }}
+            document.addEventListener('keydown', enterHandler)
             const buttonListener = (e) => {
             let val = inputPrompt.value
-            prompt.classList.add("prompthidden")
-            button.removeEventListener("click", buttonListener)
-            resolve(val)
+            if(val!=""){
+                prompt.classList.add("prompthidden")
+                button.removeEventListener("click", buttonListener)
+                document.removeEventListener('keydown', enterHandler)
+                resolve(val)
+            }
         }
             button.addEventListener("click", buttonListener)
         })
@@ -49,6 +63,7 @@
             isHorizontal == true ? isHorizontal = false : isHorizontal = true
             console.log("Rotation changed, isHorizontal", isHorizontal)
         }}
+        
         document.addEventListener('keydown', rotateHandler)
     
 
