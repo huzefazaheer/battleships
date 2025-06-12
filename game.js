@@ -6,21 +6,28 @@
 
 
     let isHorizontal = true
-    let gameFinised = false
 
-    const carrier = new Ship("Carrier", 5);
-    const battleship = new Ship("Battleship", 4);
-    const cruiser = new Ship("Cruiser", 3);
-    const submarine = new Ship("Submarine", 3);
-    const destroyer = new Ship("Destroyer", 2);
+    let carrier
+    let battleship
+    let cruiser
+    let submarine
+    let destroyer
 
-    const ships = [carrier, battleship, cruiser, submarine, destroyer]
+    let ships
 
     function showWinScreen(text){
         const prompt = document.querySelector(".winscreen")
         const headingPrompt = document.querySelector(".winheading")
+        const button = document.getElementById("btnwin")
         headingPrompt.innerText = text
         prompt.classList.remove("prompthidden")
+        const buttonListener = (e) => {
+            button.removeEventListener("click", buttonListener)
+            prompt.classList.add("prompthidden")
+            console.log("restart")
+            playGame()
+        }
+        button.addEventListener("click", buttonListener)
     }
 
     async function getInputFromPrompt(text){
@@ -56,12 +63,8 @@
         })
     }
 
-    let p1_name = await getInputFromPrompt("Enter player 1 name")
-    let p2_name = await getInputFromPrompt("Enter player 2 name")
-
-
-    const p1 = new Player(p1_name);
-    const p2 = new Player(p2_name);
+    let p1
+    let p2
 
     async function placeUserShips(player){
 
@@ -87,7 +90,7 @@
                 previewCells.push(e.target.id) 
                 e.target.classList.add("previewplacement")
                 if(isHorizontal){
-                    console.log(ship.health)
+                    // console.log(ship.health)
                     for(let i = 0; i < ship.health; i++){
                         let x = parseInt(e.target.id[0], 10)
                         let y = parseInt(e.target.id[1], 10) + i
@@ -212,7 +215,6 @@
             }
             player.gameBoard.board[playerCoords[0]][playerCoords[1]] = -1
             if((attackResult == "hit" || attackResult == "invalid") && getWinner() == null) playTurn(player) 
-                else showWinScreen("You have won ", getWinner().name)
         }catch (e){
             console.log(e)
         }
@@ -223,6 +225,42 @@
         else if(p2.shipCount == 0) return p1
         else return null
     }
+
+    function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function resetBoard(player){
+    const domBoard = getPlayerBoardDOM(player)
+    for(let i = 0; i < 10; i++){
+            const row = domBoard.children[i]
+            for(let j = 0; j < 10; j++){
+                const column = row.children[j]
+                if(player.gameBoard.board[i][j] != 0){
+                    if(column.classList.contains("shiphit"))column.classList.remove("shiphit")
+                    if(column.classList.contains("hasship"))column.classList.remove("hasship")
+                    if(column.classList.contains("previewplacement"))column.classList.remove("previewplacement")
+                    if(column.classList.contains("misshit"))column.classList.remove("misshit")
+                }
+            }
+        }
+}
+
+async function playGame(){
+    carrier = new Ship("Carrier", 5);
+    battleship = new Ship("Battleship", 4);
+    cruiser = new Ship("Cruiser", 3);
+    submarine = new Ship("Submarine", 3);
+    destroyer = new Ship("Destroyer", 2);
+
+    ships = [carrier, battleship, cruiser, submarine, destroyer]
+
+
+    let p1_name = await getInputFromPrompt("Enter player 1 name")
+    let p2_name = await getInputFromPrompt("Enter player 2 name")
+
+    p1 = new Player(p1_name);
+    p2 = new Player(p2_name);
 
     hp1name.innerText = p1.name
     hp2name.innerText = p2.name
@@ -251,9 +289,11 @@
         if(winner != null) break
     }
 
-    console.log("Winner is ", winner.name)
-
-    function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    showWinScreen("Winner is "+ winner.name)
+    resetBoard(p1)
+    resetBoard(p2)
+    togglePlayer1DOM()
+    togglePlayer2DOM()
 }
 
+await playGame()

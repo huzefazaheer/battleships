@@ -16,7 +16,7 @@ h1{
    transform: translate(-50%, -50%);
    background-color: aliceblue;
    color: black;
-   padding: 10ren;
+   padding: 10rem;
    width: 100vw;
    height: 100vh;
    border-radius: 10px;
@@ -54,6 +54,10 @@ button{
     color: white;
 }
 
+#btnwin{
+    width: 30%;
+}
+
 button:hover{
     background-color: #3b5c5c;
 }
@@ -80,10 +84,10 @@ button:active{
     background-color: rgba(227, 236, 246, 0.766);
 }
 
-/* .column:hover{
+.column:hover{
     background-color: rgba(161, 194, 231, 0.829);
      transition: background-color 0.1s ease;
-} */
+}
 
 .previewplacement{
     background-color: rgba(161, 194, 231, 0.829);
