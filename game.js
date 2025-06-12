@@ -194,6 +194,14 @@
     }
 
     async function playTurn(player){
+
+        const hintHandler = (e) => {
+        if(e.key == "p"){
+            toggleShipsHint()
+        }}
+        
+        document.addEventListener('keydown', hintHandler)
+
         console.log(player.name + " is doing their turn")
         let otherPlayer
         if(player===p1) otherPlayer = p2
@@ -233,7 +241,7 @@
                 }
             }
             player.gameBoard.board[playerCoords[0]][playerCoords[1]] = -1
-            
+            document.removeEventListener('keydown', hintHandler)
             if((attackResult == "hit" || attackResult == "invalid") && getWinner() == null) await playTurn(player) 
         }catch (e){
             console.log(e)
@@ -250,19 +258,44 @@
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function toggleShipsHint(player){
-    const domBoard = getPlayerBoardDOM(player)
+let isToggled = true
+function toggleShipsHint(){
+    const domBoard1 = getPlayerBoardDOM(p1)
+    const domBoard2 = getPlayerBoardDOM(p2)
 
     for(let i = 0; i < 10; i++){
-        const row = domBoard.children[i]
+        const row = domBoard1.children[i]
         for(let j = 0; j < 10; j++){
             const column = row.children[j]
-            if(player.gameBoard.board[i][j] != 0){
-                column.classList.remove("hasship");
-                column.classList.remove("previewplacement");
+            if(p1.gameBoard.board[i][j] != 0){
+                if(!isToggled){
+                    column.classList.remove("hasship");
+                    column.classList.remove("previewplacement");
+                }else{
+                    column.classList.add("hasship");
+                    column.classList.add("previewplacement")
+                }
             }
         }
     }
+
+    for(let i = 0; i < 10; i++){
+        const row = domBoard2.children[i]
+        for(let j = 0; j < 10; j++){
+            const column = row.children[j]
+            if(p2.gameBoard.board[i][j] != 0){
+                if(!isToggled){
+                    column.classList.remove("hasship");
+                    column.classList.remove("previewplacement");
+                }else{
+                    column.classList.add("hasship");
+                    column.classList.add("previewplacement")
+                }
+            }
+        }
+    }
+
+    isToggled == false ? isToggled = true : isToggled = false
 }
 
 function resetBoard(player){
@@ -327,8 +360,7 @@ async function playGame(){
     await sleep(1000)
     togglePlayer1DOM()
     console.log("Attacking Phase")
-    toggleShipsHint(p1)
-    toggleShipsHint(p2)
+    toggleShipsHint()
     toggleHint()
 
     let winner = null
