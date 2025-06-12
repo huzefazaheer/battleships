@@ -320,6 +320,12 @@ function toggleHint(){
     else hintDOM.classList.add("prompthidden")
 }
 
+function toggleShip(){
+    const shipDOM = document.querySelector(".shipscreen")
+    if(shipDOM.classList.contains("prompthidden")) shipDOM.classList.remove("prompthidden")
+    else shipDOM.classList.add("prompthidden")
+}
+
 function setHint(heading, text){
     const hintH = document.querySelector(".hinth4")
     const hinttxt = document.querySelector(".hinttxt")
@@ -347,6 +353,7 @@ async function playGame(){
     hp2name.innerText = p2.name
 
     toggleHint()
+    toggleShip()
     setHint(p1.name, "Place your ships")
     togglePlayer1DOM()
     await placeUserShips(p1);
@@ -362,6 +369,7 @@ async function playGame(){
     console.log("Attacking Phase")
     toggleShipsHint()
     toggleHint()
+    toggleShip()
 
     let winner = null
     toggleHint()

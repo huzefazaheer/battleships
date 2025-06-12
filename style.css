@@ -25,6 +25,22 @@ h1{
    flex-direction: column;
 }
 
+.shipscreen{
+    position: absolute;
+    top: 35%;   
+    left: 20%;  
+   transform: translate(-50%, -50%);
+   background-color: #f0f8ffc4;
+   color: black;
+   padding: 2rem;
+   width: 20vw;
+   border-radius: 10px;
+   display: flex;
+   justify-content: center;
+   align-items: flex-start;
+   flex-direction: column;
+}
+
 .winscreen{
     position: absolute;
     top: 50%;   
