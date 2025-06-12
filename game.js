@@ -219,12 +219,12 @@
                 await sleep(1000)
             }else {
                 console.log("hit")
+                document.getElementById(playerCoords).classList.add("shiphit")
                 setHint(otherPlayer.name, "You have hit a ship")
                 await sleep(1000)
                 attackResult = "hit"
                 item.hit()
                 console.log(player.gameBoard.board[playerCoords[0]][playerCoords[1]])
-                document.getElementById(playerCoords).classList.add("shiphit")
                 if(item.isSunk()) {
                     player.shipCount -= 1
                     console.log(item.name,"sunk")
@@ -327,7 +327,8 @@ async function playGame(){
         if(winner != null) break
     }
 
-    showWinScreen("Winner is "+ winner.name)
+    toggleHint()
+    showWinScreen(winner.name + " has won the game")
     resetBoard(p1)
     resetBoard(p2)
     togglePlayer1DOM()
