@@ -250,6 +250,21 @@
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function toggleShipsHint(player){
+    const domBoard = getPlayerBoardDOM(player)
+
+    for(let i = 0; i < 10; i++){
+        const row = domBoard.children[i]
+        for(let j = 0; j < 10; j++){
+            const column = row.children[j]
+            if(player.gameBoard.board[i][j] != 0){
+                column.classList.remove("hasship");
+                column.classList.remove("previewplacement");
+            }
+        }
+    }
+}
+
 function resetBoard(player){
     const domBoard = getPlayerBoardDOM(player)
     for(let i = 0; i < 10; i++){
@@ -312,6 +327,8 @@ async function playGame(){
     await sleep(1000)
     togglePlayer1DOM()
     console.log("Attacking Phase")
+    toggleShipsHint(p1)
+    toggleShipsHint(p2)
     toggleHint()
 
     let winner = null
