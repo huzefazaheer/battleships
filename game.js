@@ -4,7 +4,7 @@
     const hp1name = document.querySelector(".p1name")
     const hp2name = document.querySelector(".p2name")
 
-
+    let u2IsAi = true
     let isHorizontal = true
 
     let carrier
@@ -193,7 +193,7 @@
         else playerGame.classList.add("gameboardhidden")
     }
 
-    async function playTurn(player){
+    async function playTurn(player, coords = null){
 
         const hintHandler = (e) => {
         if(e.key == "p"){
@@ -211,7 +211,13 @@
 
         let attackResult
         try{
-            const playerCoords = await getPlayerPlaceCoords(player)
+            let playerCoords
+            if(!u2IsAi || (u2IsAi && player == p2)){
+                playerCoords = await getPlayerPlaceCoords(player)
+            }else {
+                playerCoords = coords
+            }
+            console.log(coords)
             let item = player.gameBoard.board[playerCoords[0]][playerCoords[1]]
             console.log("selected  " + item)
             if(item == -1) {
@@ -242,7 +248,11 @@
             }
             player.gameBoard.board[playerCoords[0]][playerCoords[1]] = -1
             document.removeEventListener('keydown', hintHandler)
-            if((attackResult == "hit" || attackResult == "invalid") && getWinner() == null) await playTurn(player) 
+            if((attackResult == "hit" || attackResult == "invalid") && getWinner() == null){
+                if(player == p1 && u2IsAi){
+                    await playTurn(player, getAiMove())
+                }else await playTurn(player)
+            }
         }catch (e){
             console.log(e)
         }
@@ -326,11 +336,44 @@ function toggleShip(){
     else shipDOM.classList.add("prompthidden")
 }
 
+async function toggleNewGame(){
+    const newgameDOM = document.querySelector(".newgamescreen")
+    const button = document.getElementById("newgamebtn")
+    if(newgameDOM.classList.contains("prompthidden")) newgameDOM.classList.remove("prompthidden")
+    else newgameDOM.classList.add("prompthidden")
+
+    return new Promise(resolve => {
+        const setGameType = (e) => {
+            if(e.target.id == "oneplayer"){
+                resolve (true)
+            }else if(e.target.id == "twoplayer"){
+                resolve (false)
+            }
+            button.removeEventListener("click", setGameType)
+            newgameDOM.classList.add("prompthidden")
+        }
+    
+        button.addEventListener("click", setGameType)
+    })
+}
+
 function setHint(heading, text){
     const hintH = document.querySelector(".hinth4")
     const hinttxt = document.querySelector(".hinttxt")
     hintH.innerText = heading
     hinttxt.innerText = text
+}
+
+let i = 0
+let j = 0
+function getAiMove(){
+    let move = i.toString() + j.toString() + "1"
+    i++
+    if(i > 9){
+        i = 0
+        j++
+    }
+    return move
 }
 
 async function playGame(){
@@ -342,9 +385,14 @@ async function playGame(){
 
     ships = [carrier, battleship, cruiser, submarine, destroyer]
 
+    u2IsAi = await toggleNewGame()
 
     let p1_name = await getInputFromPrompt("Enter player 1 name")
-    let p2_name = await getInputFromPrompt("Enter player 2 name")
+    let p2_name
+
+    if(!u2IsAi){
+        p2_name = await getInputFromPrompt("Enter player 2 name")
+    }else p2_name = "Computer"
 
     p1 = new Player(p1_name);
     p2 = new Player(p2_name);
@@ -359,15 +407,28 @@ async function playGame(){
     await placeUserShips(p1);
     displayBoard(p1)
     await sleep(1000)
-    togglePlayer1DOM()
-    togglePlayer2DOM()
-    setHint(p2.name, "Place your ships")
-    await placeUserShips(p2)
-    displayBoard(p2)
-    await sleep(1000)
-    togglePlayer1DOM()
+    if(!u2IsAi){
+        togglePlayer1DOM()
+        togglePlayer2DOM()
+        setHint(p2.name, "Place your ships")
+        await placeUserShips(p2)
+        displayBoard(p2)
+        await sleep(1000)
+        togglePlayer1DOM()  
+    }else {
+        p2.gameBoard.placeShip(new Ship("Carrier", 5), "22", false)
+        p2.gameBoard.placeShip(new Ship("Battleship", 4), "33", false)
+        p2.gameBoard.placeShip(new Ship("Cruiser", 3), "44", false)
+        p2.gameBoard.placeShip(new Ship("Submarine", 3), "82", true)
+        p2.gameBoard.placeShip(new Ship("Destroyer", 2), "77", true)
+        togglePlayer2DOM()
+    }
     console.log("Attacking Phase")
-    toggleShipsHint()
+    if(!u2IsAi) toggleShipsHint()
+    else{
+        toggleShipsHint()
+        toggleShipsHint()
+}
     toggleHint()
     toggleShip()
 
@@ -378,9 +439,15 @@ async function playGame(){
         if(winner != null) break
         else await playTurn(p2)
         winner = getWinner()
-        if(winner != null) break
-        else await playTurn(p1)
-        winner = getWinner()
+        if(!u2IsAi){
+            if(winner != null) break
+            else await playTurn(p1)
+            winner = getWinner()
+        }else{
+            if(winner != null) break
+            else await playTurn(p1, getAiMove())
+            winner = getWinner()
+        }
         if(winner != null) break
     }
 
