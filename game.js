@@ -88,13 +88,12 @@
             else _id = "2"
 
             const mouseoverListener = (e) => {
-                previewCells.push(e.target.id) 
-                e.target.classList.add("previewplacement")
                 if(isHorizontal){
                     // console.log(ship.health)
                     for(let i = 0; i < ship.health; i++){
                         let x = parseInt(e.target.id[0], 10)
                         let y = parseInt(e.target.id[1], 10) + i
+                        if(player.gameBoard.board[x][y] != 0) break
                         if(y > 9) break
                         let newid = x.toString() + y.toString() + _id
                         previewCells.push(newid)
@@ -104,6 +103,7 @@
                     for(let i = 0; i < ship.health; i++){
                         let x = parseInt(e.target.id[0], 10) + i
                         let y = parseInt(e.target.id[1], 10)
+                        if(player.gameBoard.board[x][y] != 0) break
                         if(x > 9) break
                         let newid = x.toString() + y.toString() + _id
                         previewCells.push(newid)
