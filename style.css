@@ -9,6 +9,22 @@ h1{
     text-align: center;
 }
 
+.hintscreen{
+    position: absolute;
+    bottom: 0%;   
+    left: 50%;  
+   transform: translate(-50%, -50%);
+   background-color: #f0f8ffc4;
+   color: black;
+   padding: 2rem;
+   width: 40vw;
+   border-radius: 10px;
+   display: flex;
+   justify-content: center;
+   align-items: flex-start;
+   flex-direction: column;
+}
+
 .winscreen{
     position: absolute;
     top: 50%;   
@@ -35,6 +51,26 @@ h1{
    color: black;
    padding: 40px;
    border-radius: 10px;
+   width: 20vw;
+}
+
+.prompt input{
+    width: 97%;
+    height: 3vh;
+}
+
+.prompt button{
+    height: 5vh;
+}
+
+.hintscreen h4{
+    margin-bottom: 4px;
+}
+
+.hinttxt{
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.2rem;
 }
 
 h4{
@@ -56,6 +92,7 @@ button{
 
 #btnwin{
     width: 30%;
+    height: 6vh;
 }
 
 button:hover{
@@ -75,11 +112,11 @@ button:active{
     flex-direction: row;
     justify-content: space-evenly;
     background-color: rgba(185, 206, 236, 0);
-    margin-top: 10vh;
+    margin-top: 5vh;
 }
 
 .column{
-    padding: 25px;
+    padding: 22px;
     /* border: 1px solid white; */
     background-color: rgba(227, 236, 246, 0.766);
 }

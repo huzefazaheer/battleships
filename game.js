@@ -78,6 +78,7 @@
     
 
         for(const ship of ships){
+            setHint(player.name, "Place your ship.  Placing "+ ship.name)
 
             //fix boo boo code
             let previewCells = []
@@ -193,28 +194,47 @@
     }
 
     async function playTurn(player){
+        console.log(player.name + " is doing their turn")
+        let otherPlayer
+        if(player===p1) otherPlayer = p2
+        else otherPlayer = p1
+
+        setHint(otherPlayer.name, "Select a coordinate to shoot")
+
         let attackResult
         try{
             const playerCoords = await getPlayerPlaceCoords(player)
             let item = player.gameBoard.board[playerCoords[0]][playerCoords[1]]
-            console.log(item)
-            if(item == -1) attackResult = "invalid"
-            if(item == 0){
+            console.log("selected  " + item)
+            if(item == -1) {
+                attackResult = "invalid"
+                setHint(otherPlayer.name, "This square has already been attacked")
+                await sleep(1000)
+            }
+            else if(item == 0){
                 document.getElementById(playerCoords).classList.add("misshit")
                 attackResult = "miss"
                 console.log("miss")
+                setHint(otherPlayer.name, "You have missed")
+                await sleep(1000)
             }else {
                 console.log("hit")
+                setHint(otherPlayer.name, "You have hit a ship")
+                await sleep(1000)
                 attackResult = "hit"
                 item.hit()
+                console.log(player.gameBoard.board[playerCoords[0]][playerCoords[1]])
                 document.getElementById(playerCoords).classList.add("shiphit")
                 if(item.isSunk()) {
                     player.shipCount -= 1
                     console.log(item.name,"sunk")
+                    setHint(otherPlayer.name, "You have sunk the " + item.name)
+                    await sleep(1000)
                 }
             }
             player.gameBoard.board[playerCoords[0]][playerCoords[1]] = -1
-            if((attackResult == "hit" || attackResult == "invalid") && getWinner() == null) playTurn(player) 
+            
+            if((attackResult == "hit" || attackResult == "invalid") && getWinner() == null) await playTurn(player) 
         }catch (e){
             console.log(e)
         }
@@ -246,6 +266,19 @@ function resetBoard(player){
         }
 }
 
+function toggleHint(){
+    const hintDOM = document.querySelector(".hintscreen")
+    if(hintDOM.classList.contains("prompthidden")) hintDOM.classList.remove("prompthidden")
+    else hintDOM.classList.add("prompthidden")
+}
+
+function setHint(heading, text){
+    const hintH = document.querySelector(".hinth4")
+    const hinttxt = document.querySelector(".hinttxt")
+    hintH.innerText = heading
+    hinttxt.innerText = text
+}
+
 async function playGame(){
     carrier = new Ship("Carrier", 5);
     battleship = new Ship("Battleship", 4);
@@ -265,19 +298,24 @@ async function playGame(){
     hp1name.innerText = p1.name
     hp2name.innerText = p2.name
 
+    toggleHint()
+    setHint(p1.name, "Place your ships")
     togglePlayer1DOM()
     await placeUserShips(p1);
     displayBoard(p1)
     await sleep(1000)
     togglePlayer1DOM()
     togglePlayer2DOM()
+    setHint(p2.name, "Place your ships")
     await placeUserShips(p2)
     displayBoard(p2)
     await sleep(1000)
     togglePlayer1DOM()
     console.log("Attacking Phase")
+    toggleHint()
 
     let winner = null
+    toggleHint()
     while(winner == null){
         winner = getWinner()
         if(winner != null) break
@@ -296,4 +334,4 @@ async function playGame(){
     togglePlayer2DOM()
 }
 
-await playGame()
+ playGame()
