@@ -1,5 +1,5 @@
 body{
-background-image: url("./water.gif");
+background-image: url("water.gif");
 background-repeat: repeat;
 color: white;
 font-family: Arial, Helvetica, sans-serif;
@@ -170,7 +170,7 @@ button:active{
 }
 
 .column{
-    padding: 22px;
+    padding: 20px;
     /* border: 1px solid white; */
     background-color: rgba(227, 236, 246, 0.766);
 }

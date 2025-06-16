@@ -1,5 +1,5 @@
-import Player from "./Player.js"
-import Ship from "./Ship.js"
+const Player = require ('./Player')
+const Ship = require ('./Ship')
 
 const p1 = new Player("player1");
 

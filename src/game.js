@@ -1,5 +1,7 @@
-    import Player from "./utils/Player.js"
-    import Ship from "./utils/Ship.js"
+    import  './style.css'
+    
+    const Player = require ('./utils/Player')
+    const Ship = require('./utils/Ship')
 
     const hp1name = document.querySelector(".p1name")
     const hp2name = document.querySelector(".p2name")

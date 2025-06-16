@@ -1,6 +1,6 @@
-import gameBoard from "./gameBoard.js"
+const gameBoard = require('./gameBoard')
 
-export default class Player{
+class Player{
 
     constructor(name){
         this.name = name
@@ -10,3 +10,5 @@ export default class Player{
         this.shipCount = 5;
     }
 }
+
+module.exports = Player;
