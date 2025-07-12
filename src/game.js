@@ -310,6 +310,34 @@ function toggleShipsHint(){
     isToggled == false ? isToggled = true : isToggled = false
 }
 
+function offShipsHint(){
+    const domBoard1 = getPlayerBoardDOM(p1)
+    const domBoard2 = getPlayerBoardDOM(p2)
+
+    for(let i = 0; i < 10; i++){
+        const row = domBoard1.children[i]
+        for(let j = 0; j < 10; j++){
+            const column = row.children[j]
+            if(p1.gameBoard.board[i][j] != 0){
+                    column.classList.remove("hasship");
+                    column.classList.remove("previewplacement");
+            
+            }
+        }
+    }
+
+    for(let i = 0; i < 10; i++){
+        const row = domBoard2.children[i]
+        for(let j = 0; j < 10; j++){
+            const column = row.children[j]
+            if(p2.gameBoard.board[i][j] != 0){
+                    column.classList.remove("hasship");
+                    column.classList.remove("previewplacement");
+            }
+        }
+    }
+}
+
 function resetBoard(player){
     const domBoard = getPlayerBoardDOM(player)
     for(let i = 0; i < 10; i++){
@@ -426,11 +454,7 @@ async function playGame(){
         togglePlayer2DOM()
     }
     console.log("Attacking Phase")
-    if(!u2IsAi) toggleShipsHint()
-    else{
-        toggleShipsHint()
-        toggleShipsHint()
-}
+    offShipsHint()
     toggleHint()
     toggleShip()
 
